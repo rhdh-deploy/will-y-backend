@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: will-y-poi-backend-app-dev
+  annotations:
+    argocd/app-name: will-y-poi-backend-app-dev
+    backstage.io/kubernetes-id: will-y-poi-backend-app
+    backstage.io/kubernetes-namespace: will-y
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-deploy/will-y-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.a1jxqhzp.eastus2.aroapp.io/dev-pipelines/ns/will-y/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.a1jxqhzp.eastus2.aroapp.io/k8s/ns/will-y/deployments/will-y-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.a1jxqhzp.eastus2.aroapp.io/#https://github.com/rhdh-deploy/will-y-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/will-y"
+  system: workshop-system-will-y
+  providesApis:
+    - backend-api-will-y
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-will-y
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/will-y"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-will-y
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://will-y-poi-backend-app-will-y.apps.a1jxqhzp.eastus2.aroapp.io/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-deploy/will-y-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/will-y"
+  system: workshop-system-will-y
+  definition:
+    $text: https://github.com/rhdh-deploy/will-y-backend/tree/main/src/main/resources/META-INF/openapi.yaml
